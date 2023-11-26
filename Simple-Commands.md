@@ -19,5 +19,5 @@ docker-compose down && docker-compose build --no-cache && docker-compose up
 ```bash
 docker image prune -a -f #This command will remove all the unused images, including their intermediate layers. Be careful when using this command as it can remove images that you may still need.
 docker sudo builder prune -a #This command will remove any cached layers for images that have been removed with “docker rmi” but for which caches are still present. It’s important to note that this command only removes cache for images that have been removed with “docker rmi” and are not visible with “docker images –all”.
-docker system prune -a
+docker system prune -a #The easiest way to clear the Docker cache, as well as other unused resources like stopped containers and dangling images. The -a flag removes all unused images, not just the dangling ones. Confirm the action by typing ‘y’ when prompted.
 ```
