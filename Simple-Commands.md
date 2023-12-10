@@ -21,3 +21,5 @@ docker image prune -a -f #This command will remove all the unused images, includ
 docker sudo builder prune -a #This command will remove any cached layers for images that have been removed with “docker rmi” but for which caches are still present. It’s important to note that this command only removes cache for images that have been removed with “docker rmi” and are not visible with “docker images –all”.
 docker system prune -a #The easiest way to clear the Docker cache, as well as other unused resources like stopped containers and dangling images. The -a flag removes all unused images, not just the dangling ones. Confirm the action by typing ‘y’ when prompted.
 ```
+**Docker run with --rm flag**
+The docker run command is docker's standard tool to help you start and run your containers. The --rm flag is there to tell the Docker Daemon to clean up the container and remove the file system after the container exits
