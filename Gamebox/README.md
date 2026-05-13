@@ -10,6 +10,7 @@ $ docker node ls
 ID                            HOSTNAME   STATUS    AVAILABILITY   MANAGER STATUS
 abc123...                     debian     Ready     Active         Leader
 def456...                     debian     Ready     Active         Reachable
+```
 
 ## Solution Overview
 
@@ -38,10 +39,10 @@ NODE_IP=$(ip route get 8.8.8.8 | grep -oP 'src \K[\d.]+')
 
 ### Set Hostname
 
-bash
+```bash
 sudo hostnamectl set-hostname $NODE_IP
 sudo systemctl restart docker
-
+```
 ### Potential Issue: Terminal Display
 
 After setting hostname to IP, you might see garbled output in terminal prompt:
@@ -49,11 +50,11 @@ After setting hostname to IP, you might see garbled output in terminal prompt:
 kasra@10227161162:~$  # Missing dots
 
 **Fix:** Ensure UTF-8 locale is configured:
-bash
+```bash
 locale  # Check current locale
 sudo locale-gen en_US.UTF-8
 sudo update-locale LANG=en_US.UTF-8
-
+```
 Also check terminal font supports all characters.
 
 ## Method 2: Using Descriptive Names (Recommended)
@@ -68,7 +69,7 @@ Instead of raw IPs, use meaningful names:
 
 Create `setup-swarm-hostnames.sh`:
 
-bash
+```bash
 #!/bin/bash
 
 # Node configuration map
@@ -121,24 +122,25 @@ sudo systemctl restart docker
 
 echo "Done! Hostname set to $NEW_HOSTNAME"
 echo "Verify with: docker node ls"
-
+```
 ### Deploy Script to All Nodes
 
-bash
+```bash
 # Copy script to all nodes
 for ip in 10.227.161.162 10.227.161.163 10.227.161.164 10.227.161.165; do
 scp setup-swarm-hostnames.sh kasra@$ip:/tmp/
 done
-
+```
 # Execute on each node
+```bash
 for ip in 10.227.161.162 10.227.161.163 10.227.161.164 10.227.161.165; do
 ssh kasra@$ip "chmod +x /tmp/setup-swarm-hostnames.sh && /tmp/setup-swarm-hostnames.sh"
 done
-
+```
 ## Verification
 
 Check updated hostnames:
-bash
+```bash
 docker node ls
 
 Expected output:
@@ -146,4 +148,5 @@ Expected output:
 ID                            HOSTNAME                    STATUS    AVAILABILITY   MANAGER STATUS
 abc123...                     Swarm-Manager-161-162       Ready     Active         Leader
 def456...                     Swarm-Worker-161-163        Ready     Active         
-ghi789...                 
+ghi789...
+```
